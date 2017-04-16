@@ -37,15 +37,23 @@ def main():
 	config_db = config_handle()
 	redis_config = config.getRedisConfig(config_db.cursor())
 
-	r = connect_cache(redis_config)
-
-	print "Connected to redis:", r.ping()
-
-	ema_db = db_handle(config_db)
-	records = grab_records(ema_db.cursor(), 0, 1000)
+	r = connect_cache(redis_config)			#grab a connection to the redis cache
 
 
+	#check if redis connection was successful
+	try:
+		r.ping()
+	except redis.exceptions.ConnectionError as e:
+		print "Could not connect to redis server: ", e
+		return False
 
+	ema_db = db_handle(config_db)		#grab connection handle to the ema db
+
+	records = grab_records(ema_db.cursor(), 0, 1000) #grab some records as a test
+
+
+
+	#clean up
 	ema_db.close()
 	config_db.close()
 
