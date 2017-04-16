@@ -28,7 +28,7 @@ def config_handle():
 #grab connection handle to the foreign ema db (mysql)
 def db_handle(config_db):
 	db_settings = config.getDatabaseConfig(config_db.cursor())
-	print db_settings
+	print "Using the following remote database configuration:", db_settings
 
 	try:
 		conn=MySQLdb.connect(host=db_settings["host"],port=int(db_settings["port"]),user=db_settings["username"],passwd=db_settings["password"], db=db_settings["default_db"], use_unicode=True, charset="utf8", connect_timeout=1)

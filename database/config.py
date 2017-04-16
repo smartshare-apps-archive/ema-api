@@ -45,3 +45,17 @@ def getDatabaseConfig(config_db):
 			formattedDatabaseConfig[setting[0]] = setting[1]
 
 		return formattedDatabaseConfig
+
+
+
+def getRecordCount(ema_db):
+	q = """SELECT COUNT(*) FROM erpubtbl;"""
+	try:
+		ema_db.execute(q)
+	except Exception as e:
+		print "Error getting record count: ", e
+		return None
+
+	count = ema_db.fetchone()
+	if count:
+		return count[0]
