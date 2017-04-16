@@ -27,9 +27,11 @@ def grab_records(ema_db, start_index, end_index):
 	records = ema_db.fetchall()
 
 	if records:
+		formattedRecords = {}
 		for record in records:
-			print record
+			formattedRecords[record[1]] = record[0]
 
+		return formattedRecords
 
 
 
@@ -51,6 +53,8 @@ def main():
 
 	records = grab_records(ema_db.cursor(), 0, 1000) #grab some records as a test
 
+	
+	#print records
 
 
 	#clean up
