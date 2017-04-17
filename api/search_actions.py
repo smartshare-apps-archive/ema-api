@@ -69,8 +69,8 @@ def search_by_title():
 		
 		
 		ema_db.close()
-		return json.dumps({"search_results": titles})
-		
+		return json.dumps({"n_results": cardinality, "search_results": titles[:10]})
+
 	else:
 
 		ema_db.close()
