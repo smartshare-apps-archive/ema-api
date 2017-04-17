@@ -10,7 +10,7 @@ from flask import Flask, render_template, url_for, abort, request, Response, mak
 #api endpoints
 from api import search_actions
 from database.db import *
-from cache.main import *
+
 
 application = Flask(__name__)
 
@@ -59,17 +59,6 @@ if __name__ == "__main__":
 
 	#live_host = "0.0.0.0"
 	live_host = "127.0.0.1"
-
-	config_db = config_handle()
-	redis_config = config.getRedisConfig(config_db.cursor())
-
-
-	r = connect_cache(redis_config)			#grab a connection to the redis cache
-	ema_db = db_handle(config_db)		#grab connection handle to the ema db
-
-
-	application.config["ema_db"] = ema_db
-	application.config["cache"] = r
 
 
 	application.run(host = live_host, debug=True, extra_files=extra_files, threaded=True)

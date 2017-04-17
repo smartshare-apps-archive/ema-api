@@ -1,10 +1,12 @@
 import json, ast, re
 
-from flask import Blueprint, render_template, abort, current_app, session, request
+from flask import Blueprint, render_template, abort, current_app, session, request, g
 
 from cache import index
 from cache import search
 from cache import tokenize
+
+from cache.main import *
 
 searchActions = Blueprint('searchActions', __name__, template_folder='templates')
 
@@ -38,8 +40,12 @@ def search_by_title():
 	searchTerm = request.form['searchTerm']
 	searchTerm = json.loads(searchTerm)
 
-	r = current_app.config["cache"]
-	ema_db = current_app.config["ema_db"]
+	config_db = config_handle()
+	redis_config = config.getRedisConfig(config_db.cursor())
+
+	r = connect_cache(redis_config)			#grab a connection to the redis cache
+	ema_db = db_handle(config_db)		#grab connection handle to the ema db
+
 
 	search_result = search.parse_and_search(r, searchTerm)
 
@@ -56,6 +62,8 @@ def search_by_title():
 			return json.dumps({"search_results": full_results})
 
 
+	emba_db.close()
+	
 	return json.dumps({"no_results": None})
 
 
