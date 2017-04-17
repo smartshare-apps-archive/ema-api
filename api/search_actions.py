@@ -57,13 +57,13 @@ def search_by_title():
 
 			titles = pull_records(set_members, ema_db.cursor())
 			full_results = zip(titles, set_members)
-
+			print len(titles), len(set_members)
 			#print type(cardinality), ":", type(set_members)
-			return json.dumps({"search_results": full_results})
+			return json.dumps({"search_results": titles})
 
 
 	emba_db.close()
-	
+
 	return json.dumps({"no_results": None})
 
 
