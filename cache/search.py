@@ -107,5 +107,6 @@ def parse_and_search(r, q, ttl=30):
 			unwanted.insert(0, intersect_result)
 			return difference(r, unwanted, ttl=ttl)
 
+	print "intersect_result:", type(intersect_result), ":", intersect_result
 	return intersect_result
 

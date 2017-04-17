@@ -49,22 +49,32 @@ def search_by_title():
 
 	search_result = search.parse_and_search(r, searchTerm)
 
-	if search_result:
-		cardinality = r.scard('idx:' + search_result)
+	
+	
+	print "result: ", search_result
 
-		if cardinality > 0:
-			set_members = list(r.smembers('idx:' + search_result))
+	if search_result == None:
+		return json.dumps({"no_results": None})
 
-			titles = pull_records(set_members, ema_db.cursor())
-			full_results = zip(titles, set_members)
-			print len(titles), len(set_members)
-			#print type(cardinality), ":", type(set_members)
-			return json.dumps({"search_results": titles})
+	cardinality = r.scard('idx:' + search_result)
 
 
-	emba_db.close()
+	if cardinality > 0:
+		set_members = list(r.smembers('idx:' + search_result))
 
-	return json.dumps({"no_results": None})
+		titles = pull_records(set_members, ema_db.cursor())
+		#full_results = zip(titles, set_members)
+		#print len(titles), len(set_members)
+		#print type(cardinality), ":", type(set_members)
+		
+		
+		ema_db.close()
+		return json.dumps({"search_results": titles})
+		
+	else:
+
+		ema_db.close()
+		return json.dumps({"no_results": None})
 
 
 

@@ -40,7 +40,7 @@
 					})
 					  .done(function( results) {
 					  	if("search_results" in results){
-					  		if(results["search_results"].length > 0){
+					  		
 					  			$("#output_searchResults").html("");
 					  			
 					  			for(var i=0; i<results["search_results"].length; i++){
@@ -50,7 +50,7 @@
 					  			$("#n_results").html(String(results["search_results"].length));
 
 					  			
-					  		}
+					  		
 					  	}
 					  	else{
 					  		$("#output_searchResults").html("No results found...");
