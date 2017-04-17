@@ -1,0 +1,98 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+	<!-- core control panel styles -->
+	<link rel="stylesheet" href="/static/css/control.css">
+
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	
+	<!-- these script includes should be moved to a common libraries template -->
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"> </script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"> </script>
+	<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script> 
+
+	<script type="text/javascript">
+
+		$(document).ready(function(){
+
+			$("#btn_search").click(function(){
+
+				var searchTerm = $("#input_searchTerm").val();
+
+				if(searchTerm == ""){
+					$("#output_searchResults").html("");
+					$("#n_results").html("0");
+				}
+
+				$.ajax({
+					  method: "POST",
+					  url: "/search/title",
+					  dataType: "json",
+					  data: { searchTerm: JSON.stringify(searchTerm) },
+					  traditional: true
+					})
+					  .done(function( results) {
+					  	if("search_results" in results){
+					  		if(results["search_results"].length > 0){
+					  			$("#output_searchResults").html("");
+					  			
+					  			for(var i=0; i<results["search_results"].length; i++){
+					  				$("#output_searchResults").append(String(results["search_results"][i]) + "<hr>");
+					  			}
+
+					  			$("#n_results").html(String(results["search_results"].length));
+
+					  			
+					  		}
+					  	}
+					  	else{
+					  		$("#output_searchResults").html("No results found...");
+					  		$("#n_results").html("0")
+					  	}
+
+					  });
+	 
+			});
+
+
+		});
+
+
+	</script>
+
+</head>
+
+<body>
+<div class="container">
+	<div class="row">
+		<div class="col-xs-12 text-center">
+			<hr>
+			<div class="input-group">
+			<span class="input-group-addon"> Enter a search term </span>
+			<input type="text" class="form-control" id="input_searchTerm" placeholder="Give me a try...">
+			</div>	
+			<br>
+			<button type="button" class="btn btn-primary" id="btn_search"> Search </button>
+
+
+
+			<hr>
+			<div class="panel panel-primary">
+				<div class="panel-heading"> Search results (<span id="n_results">0</span>) </div>
+				<div class="panel-body" id="output_searchResults">  </div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+</body>
+</html>

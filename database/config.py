@@ -59,3 +59,5 @@ def getRecordCount(ema_db):
 	count = ema_db.fetchone()
 	if count:
 		return count[0]
+
+
